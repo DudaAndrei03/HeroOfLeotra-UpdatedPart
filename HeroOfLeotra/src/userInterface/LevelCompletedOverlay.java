@@ -1,7 +1,9 @@
 package userInterface;
 
+import Entities.EnemyManager;
 import GameStates.GameState;
 import GameStates.Playing;
+import Levels.LevelManager;
 import Main.Game;
 import utilities.LoadSave;
 
@@ -12,17 +14,21 @@ import java.awt.image.BufferedImage;
 import static utilities.Constants.UI.URM_Buttons.URM_SIZE;
 
 public class LevelCompletedOverlay {
-
+    private Game game;
     private Playing playing;
+
+    private EnemyManager enemyManager;
 
     private BufferedImage img;
 
     private int backgroundX,backgroundY,backgroundWidth,backgroundHeight;
 
     private UrmButton next,menu;
-    public LevelCompletedOverlay(Playing playing)
+    public LevelCompletedOverlay(Playing playing,Game game,EnemyManager enemyManager)
     {
+        this.game = game;
         this.playing = playing;
+        this.enemyManager = enemyManager;
         initImg();
         initButtons();
     }
@@ -76,15 +82,22 @@ public class LevelCompletedOverlay {
 
         else if(isIn(next,e)) {
             if (next.isMousePressed()) {
-                playing.resetAll();
+               //LevelManager.updateLvlIndex();
+                //int lvl_ind = LevelManager.getLvlIndex();
+                //System.out.println(lvl_ind);
                 GameState.state = GameState.PLAYING;
-                playing.unpauseGame();
+                playing.resetAll();
+                game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex()); // Pt schimbarea muzicii
+
+                //playing.unpauseGame();
                 System.out.println("Next LEVEL!");
+
             }
         }
         menu.resetBools();
         next.resetBools();
     }
+
 
     public boolean isIn(UrmButton b,MouseEvent e)
     {

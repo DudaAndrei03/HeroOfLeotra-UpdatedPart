@@ -1,12 +1,14 @@
 package Entities;
 
 import GameStates.Playing;
+import Levels.LevelManager;
 import Main.Game;
 import utilities.LoadSave;
 
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 
 import static utilities.Constants.EnemyConstants.*;
@@ -16,7 +18,7 @@ public class EnemyManager {
 
     private static int enemies = 0;
 
-    private static int numberEnemiesLVL1;
+    private static int numberEnemies;
     private BufferedImage[][] Skeleton_arr;
     private Playing playing;
 
@@ -24,16 +26,36 @@ public class EnemyManager {
     public EnemyManager(Playing playing) {
         this.playing = playing;
         loadEnemyImgs();
-        addEnemies();
+        loadEnemies();
     }
 
-    private void addEnemies() {
+    public void loadEnemies() {
+        clearEnemies();
+
+        loadSkeletons();
+        System.out.println(skeletons.size());
+        System.out.println("LOAD ENEMIES APELAT!");
+        enemies += skeletons.size();
+        numberEnemies = enemies; // specifically for enemies onLVL1
+
+        //System.out.println("Number of skeletons:" +  skeletons.size());
+    }
+
+    public void clearEnemies()
+    {
+        skeletons.clear();
+    }
+    public void loadSkeletons()
+    {
+        skeletons = LoadSave.GetSkeletons(playing.getLevelManager().getCurrentLevel().getLevelData());
+    }
+
+    /*public void updateEnemies()
+    {
         skeletons = LoadSave.GetSkeletons();
         enemies += skeletons.size();
-        numberEnemiesLVL1 = enemies; // specifically for enemiesonLVL1
-
-        System.out.println("Number of skeletons:" +  skeletons.size());
-    }
+        numberEnemiesLVL1 = enemies;
+    }*/
 
     private void loadEnemyImgs() {
         Skeleton_arr = new BufferedImage[12][8];
@@ -110,12 +132,19 @@ public class EnemyManager {
 
     public void update(int [][] lvlData,Player player)
     {
+        boolean isAnyActive = false;
         for(Skeleton sk : skeletons)
         {
             if(sk.isActive()) {
                 sk.update(lvlData, player);
+                isAnyActive = true;
             }
         }
+        if(!isAnyActive)
+        {
+            enemies = 0;
+        }
+        //addEnemies();
     }
 
     public void resetAllEnemies()
@@ -124,7 +153,7 @@ public class EnemyManager {
         {
             sk.resetEnemy();
         }
-        enemies = numberEnemiesLVL1;
+        enemies = numberEnemies;
     }
     public static int getEnemies()
     {

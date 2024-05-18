@@ -109,7 +109,7 @@ public class PauseOverlay {
                     playing.resetAll();
                     GameState.state = GameState.PLAYING;
                     playing.unpauseGame();
-                    System.out.println("S-a incercat REPLAY!");
+                    //System.out.println("S-a incercat REPLAY!");
                 }
             }
         else if(isIn(e,unpauseB))

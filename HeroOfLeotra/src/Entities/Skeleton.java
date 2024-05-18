@@ -86,4 +86,5 @@ public class Skeleton extends Enemy{
         updateAnimationTick();
         updateAttackBox();
     }
+
 }

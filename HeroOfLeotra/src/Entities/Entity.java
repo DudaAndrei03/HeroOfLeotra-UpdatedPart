@@ -29,6 +29,7 @@ public abstract class Entity {
         g.drawRect((int)(hitbox.x - lvlOffset) ,(int)(hitbox.y),(int)hitbox.width,(int)(hitbox.height));
     }
 
+
     protected void initHitbox(float x,float y, int width, int height) {
         hitbox = new Rectangle2D.Float(x,y,width,height);
 

@@ -57,6 +57,20 @@ public class Constants {
         public static final int TREES_BACK_HEIGHT = (int)(TREES_BACK_HEIGHT_DEFAULT * Game.SCALE);
 
 
+        //MAP 2
+
+        public static final int CLOSE_TREES_WIDTH_DEFAULT = 592;
+
+        public static final int CLOSE_TREES_HEIGHT_DEFAULT = 272;
+
+        public static final int CLOSE_TREES_WIDTH = (int)(CLOSE_TREES_WIDTH_DEFAULT * Game.SCALE);
+
+        public static final int CLOSE_TREES_HEIGHT = (int)(CLOSE_TREES_HEIGHT_DEFAULT * Game.SCALE) + 220;
+
+
+
+
+
     }
 
     public static class EnemyConstants{
@@ -76,6 +90,16 @@ public class Constants {
 
         public static final int SKELETON_DRAWOFFSET_X = (int)(14 * Game.SCALE);
         public static final int SKELETON_DRAWOFFSET_Y = (int)(8 * Game.SCALE);
+
+
+        public static final int KNIGHT_WIDTH_DEFAULT = 16;
+        public static final int KNIGHT_HEIGHT_DEFAULT = 28;
+
+        public static final int KNIGHT_WIDTH = (int)(KNIGHT_WIDTH_DEFAULT * Game.SCALE);
+        public static final int KNIGHT_HEIGHT = (int)(KNIGHT_HEIGHT_DEFAULT * Game.SCALE);
+
+        public static final int KNIGHT_DRAWOFFSET_X = (int)(14 * Game.SCALE);
+        public static final int KNIGHT_DRAWOFFSET_Y = (int)(8 * Game.SCALE);
 
 
 

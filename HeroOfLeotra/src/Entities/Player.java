@@ -164,6 +164,8 @@ public class Player extends Entity{
         //cumva ajunge animationIndexu mai mare decat GetSpriteAmount
         // [11][6] -> [3][6] in loc sa puna animationIndexu pe 0 mai intai si sa faca [3][0]
 
+
+
             if (direction == Direction.LEFT) {
                 g.drawImage(Animations[playerAction - 2][animationIndex], (int) (hitbox.x - xDrawOffset) - lvlOffset, (int) (hitbox.y - yDrawOffset), width, height, null);
                 //playerAction pentru left este pe 9, playerAction pentru Right este pe 7
@@ -360,6 +362,16 @@ public class Player extends Entity{
                 if(TileOfDeath((int) xIndex, (int) yIndex, lvlData))
                 {
                     changeHealth(-200);
+                }
+                else if(TileOfSlow((int)xIndex,(int)yIndex,lvlData))
+                {
+                    if(playerAction == LEFT)
+                    {
+                        hitbox.x += xSpeed / 3;
+                    }
+                    else {
+                        hitbox.x -= xSpeed / 3;
+                    }
                 }
             }
         else

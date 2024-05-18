@@ -1,5 +1,6 @@
 package GameStates;
 
+import Levels.LevelManager;
 import Main.Game;
 import userInterface.MenuButton;
 import utilities.LoadSave;

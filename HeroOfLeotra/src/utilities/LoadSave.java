@@ -1,5 +1,6 @@
 package utilities;
 import Entities.Skeleton;
+import Levels.Level;
 import Levels.LevelManager;
 import Main.Game;
 
@@ -36,6 +37,13 @@ public class LoadSave {
 
     public static final String PAUSE_BACKGROUND = "Menu/PauseOverlay.png";
 
+    public static final String PLAYING_BACKGROUND2 = "Map/Map2/background.png";
+    public static final String PLAYING_CLOSETREES2 = "Map/Map2/close-trees.png";
+
+    public static final String PLAYING_MIDTREES2 = "Map/Map2/mid-trees.png";
+
+
+
     private static int [][]lvlData;
 
     //int [][] lvlData = new int [Game.TILES_IN_HEIGHT][70];
@@ -63,10 +71,10 @@ public class LoadSave {
 
 
     public static int[][] GetLevelData() {
-        lvlData = new int [Game.TILES_IN_HEIGHT][70]; // Game.TILES_IN_WIDTH
+        lvlData = new int [Game.TILES_IN_HEIGHT][LevelManager.map_WIDTH]; // Game.TILES_IN_WIDTH
         //BufferedImage img = GetSpriteAtlas(LEVEL_ATLAS);
 
-        lvlData = LevelManager.getMap(1); //luam lvlData pentru prima mapa momentan
+        lvlData = LevelManager.getMap(); //luam lvlData pentru prima mapa momentan
 
         return lvlData;
     }
@@ -78,7 +86,7 @@ public class LoadSave {
 
 
 
-    public static ArrayList<Skeleton> GetSkeletons()
+    public static ArrayList<Skeleton> GetSkeletons(int [][] lvldata)
     {
         int value;
         ArrayList<Skeleton> list = new ArrayList<Skeleton>();
@@ -86,12 +94,13 @@ public class LoadSave {
     for(int j = 0 ; j < Game.TILES_IN_HEIGHT; j++)
         for(int i = 0; i < 70; ++i)
         {
-            value = lvlData[j][i];
+            value = lvldata[j][i];
             if(value == Constants.EnemyConstants.SKELETON)
             {
             list.add(new Skeleton(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
             }
         }
+        //System.out.println("Numărul total de schelete identificate: " + list.size());
     return list;
 
     }

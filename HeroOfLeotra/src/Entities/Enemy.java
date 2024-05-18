@@ -10,7 +10,7 @@ import static utilities.Constants.getMaxHealth;
 import static utilities.Help.*;
 import static utilities.Constants.Directions.*;
 
-public abstract class Enemy extends Entity{
+public abstract class Enemy extends Entity {
 
     protected boolean inAir;
 
@@ -22,26 +22,26 @@ public abstract class Enemy extends Entity{
 
     protected float gravity = 0.04f * Game.SCALE;
 
-    protected int animationIndex,enemyState = 1,enemyType;
-    protected int animationTick,animationSpeed = 25,tileY;
+    protected int animationIndex, enemyState = 1, enemyType;
+    protected int animationTick, animationSpeed = 25, tileY;
 
     protected float attackDistance = Game.TILES_SIZE;
 
     protected boolean firstUpdate = true;
 
-    protected int maxHealth,currentHealth;
+    protected int maxHealth, currentHealth;
     protected boolean active = true;
     protected boolean attackChecked;
-    public Enemy(float x, float y, int height, int width,int enemyType) {
+
+    public Enemy(float x, float y, int height, int width, int enemyType) {
         super(x, y, height, width);
-        this.enemyType=enemyType;
+        this.enemyType = enemyType;
         maxHealth = getMaxHealth(enemyType);
         currentHealth = maxHealth;
     }
 
-    protected void firstUpdateCheck(int [][] lvlData)
-    {
-        if(!IsEntityOnFloor(hitbox,lvlData))
+    protected void firstUpdateCheck(int[][] lvlData) {
+        if (!IsEntityOnFloor(hitbox, lvlData))
             inAir = true;
         firstUpdate = false;
     }

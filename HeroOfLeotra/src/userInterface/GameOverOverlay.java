@@ -2,6 +2,7 @@ package userInterface;
 
 import GameStates.GameState;
 import GameStates.Playing;
+import Levels.LevelManager;
 import Main.Game;
 
 import java.awt.*;
@@ -28,6 +29,7 @@ public class GameOverOverlay {
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
             playing.resetAll();
+            //LevelManager.setLvlIndex(1);
             GameState.state = GameState.MENU;
         }
     }
