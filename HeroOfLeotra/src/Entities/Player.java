@@ -26,6 +26,9 @@ public class Player extends Entity{
     }
     Direction direction = null;
 
+
+    private static int Score = 0;
+    private int health_potion = 15;
     private BufferedImage[][] Animations;
     private int animationTick = 0,animationIndex = 0,animationSpeed = 30;
     private int playerAction = IDLE;
@@ -44,6 +47,8 @@ public class Player extends Entity{
     private float airSpeed = 0f;
     private float gravity = 0.04f * Game.SCALE;
     private float jumpSpeed = -2.75f * Game.SCALE;
+
+    private float superjumpSpeed = -3.75f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
@@ -191,6 +196,7 @@ public class Player extends Entity{
         //drawHitbox(g,lvlOffset);
             //System.out.println("[" + playerAction + "]" + "[" + animationIndex + "]");
         drawUI(g);
+        drawScore(g);
         //drawAttackHitBox(g,lvlOffset);
     }
 
@@ -204,6 +210,27 @@ public class Player extends Entity{
         g.setColor(Color.red);
         g.fillRect(healthBarX+47,healthBarY+8,healthWidth,healthBarHeight-16);
         //Dreptunghiul pentru portiunea rosie
+    }
+    private void drawScore(Graphics g)
+    {
+        Graphics2D g2d = (Graphics2D) g;
+
+        g2d.setColor(Color.gray);
+        g2d.drawRect(Game.GAME_WIDTH - 200, 50, 120, 30); // un dreptunghi gri
+
+
+        // Setează fontul pentru text (BOLD pentru "SCOR")
+        Font fontBold = new Font("Serif", Font.BOLD, 18);
+        g2d.setFont(fontBold);
+        g2d.setColor(Color.white); // Culoarea textului
+
+        // Desenează textul "SCOR"
+        g2d.drawString("SCOR:"+ Score, Game.GAME_WIDTH - 180, 70);
+
+        // Setează fontul pentru scor (regular)
+        Font fontRegular = new Font("Serif", Font.PLAIN, 18);
+        g2d.setFont(fontRegular);
+
     }
 
 
@@ -249,7 +276,7 @@ public class Player extends Entity{
         moving = false;
         if(jump)
         {
-            jump();
+            jump(0);
         }
         //Checking if we are not pressing anything at all
         if (!left && !right && !inAir)
@@ -340,11 +367,14 @@ public class Player extends Entity{
         }
 
 
-    private void jump() {
+    private void jump(int superPower) {
         if(inAir)
             return;
         inAir = true;
-        airSpeed = jumpSpeed;
+        if(superPower == 0)
+            airSpeed = jumpSpeed;
+        else
+            airSpeed = superjumpSpeed;
     }
 
     private void resetInAir() {
@@ -363,6 +393,7 @@ public class Player extends Entity{
                 {
                     changeHealth(-200);
                 }
+
                 else if(TileOfSlow((int)xIndex,(int)yIndex,lvlData))
                 {
                     if(playerAction == LEFT)
@@ -373,6 +404,18 @@ public class Player extends Entity{
                         hitbox.x -= xSpeed / 3;
                     }
                 }
+                else if(HealTile((int)xIndex,(int)yIndex,lvlData))
+                {
+                    changeHealth(health_potion);
+                    lvlData[(int)yIndex][(int)xIndex] = 0; //sa dispara dupa ce am luat inima
+                    Player.updateScore(5);
+                }
+
+                else if(TileOfJump((int)xIndex,(int)yIndex,lvlData))
+                {
+                    jump(1);
+                }
+
             }
         else
             {
@@ -489,10 +532,15 @@ public class Player extends Entity{
         currentHealth = maxHealth;
         hitbox.x = x;
         hitbox.y = y;
+        Score = 0;
 
         if(!IsEntityOnFloor(hitbox,lvlData))
         {
             inAir = true;
         }
+    }
+    public static void updateScore(int value)
+    {
+        Score += value;
     }
 }

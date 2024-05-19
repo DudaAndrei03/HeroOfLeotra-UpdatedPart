@@ -2,9 +2,11 @@ package Entities;
 import Main.Game;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 import static utilities.Constants.EnemyConstants.*;
+import static utilities.Constants.EnemyConstants.KN_IDLE;
 import static utilities.Constants.GetEnemyDMG;
 import static utilities.Constants.getMaxHealth;
 import static utilities.Help.*;
@@ -15,6 +17,8 @@ public abstract class Enemy extends Entity {
     protected boolean inAir;
 
     protected float fallspeed;
+
+    protected float healthBarWidth;
 
     protected float walkSpeed = 0.55f * Game.SCALE;
 
@@ -36,8 +40,29 @@ public abstract class Enemy extends Entity {
     public Enemy(float x, float y, int height, int width, int enemyType) {
         super(x, y, height, width);
         this.enemyType = enemyType;
+
+        this.healthBarWidth = maxHealth;
+
         maxHealth = getMaxHealth(enemyType);
         currentHealth = maxHealth;
+    }
+    public void drawUI(Graphics g,int xLevelOffset)
+    {
+        updateHealthBar();
+        if(enemyType == SKELETON)
+            g.setColor(Color.blue);
+        else
+            g.setColor(Color.yellow);
+
+        g.fillRect((int)hitbox.x - xLevelOffset,(int)hitbox.y - 15,(int)healthBarWidth,5);
+
+        g.setColor(Color.black);
+        g.drawRect((int)hitbox.x - xLevelOffset, (int)hitbox.y - 15, (int)healthBarWidth, 5);
+
+    }
+    public void updateHealthBar()
+    {
+        healthBarWidth = currentHealth;
     }
 
     protected void firstUpdateCheck(int[][] lvlData) {
@@ -61,12 +86,24 @@ public abstract class Enemy extends Entity {
     protected void Move(int [][] lvlData)
     {
         float xSpeed = 0;
+        float enemy_speed;
+
+        switch(enemyType)
+        {
+            case SKELETON: enemy_speed = walkSpeed * 1;
+            break;
+            case KNIGHT: enemy_speed = (float) (walkSpeed * 2);
+            break;
+            default:
+                enemy_speed = walkSpeed * 1;
+        }
+
         if(walkDir == LEFT)
         {
-            xSpeed = -walkSpeed;
+            xSpeed = -enemy_speed;
         }
         else {
-            xSpeed = walkSpeed;
+            xSpeed = enemy_speed;
         }
         if(CanMoveHere(hitbox.x + xSpeed,hitbox.y,hitbox.width,hitbox.height,lvlData)) {
             if (IsFloor(hitbox, xSpeed, lvlData)) {
@@ -76,9 +113,9 @@ public abstract class Enemy extends Entity {
         }
         changeWalkDir();
     }
-    protected void updateAnimationTick()
+    protected void updateAnimationTick_Skeletons()
     {
-        if(enemyState == DEAD)
+        if(enemyState == SK_DEAD)
         {
             animationSpeed = 35;
         }
@@ -93,11 +130,44 @@ public abstract class Enemy extends Entity {
                 animationIndex = 0;
                 switch(enemyState)
                 {
-                    case ATTACKING,HIT:
-                        enemyState = IDLE;
+                    case SK_ATTACKING,SK_HIT:
+                        enemyState = SK_IDLE;
                     break;
 
-                    case DEAD:
+                    case SK_DEAD:
+                        active = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
+    protected void updateAnimationTick_Knights()
+    {
+        int animationSpeed_enemy = 20; //animation speed for every enemy;
+
+        if(enemyState == KN_DEAD)
+        {
+            animationSpeed_enemy = 35;
+        }
+        animationTick++;
+        if(animationTick >=animationSpeed_enemy)
+        {
+            animationTick = 0;
+            animationIndex++;
+            if(animationIndex >= GetSpriteAmount(enemyType,enemyState))
+            {
+                //System.out.println(GetSpriteAmount((enemyType),animationIndex));
+                animationIndex = 0;
+                switch(enemyState)
+                {
+                    case KN_ATTACKING:
+                        enemyState = KN_IDLE;
+                        break;
+
+                    case KN_DEAD:
                         active = false;
                         break;
                     default:
@@ -109,7 +179,8 @@ public abstract class Enemy extends Entity {
 
     public void update(int [][]lvlData) {
         updateMove(lvlData);
-        updateAnimationTick();
+        updateAnimationTick_Skeletons();
+        updateAnimationTick_Knights();
     }
 
     private void updateMove(int [][]lvlData)
@@ -131,29 +202,51 @@ public abstract class Enemy extends Entity {
             }
         }
             else {
-            switch(enemyState)
-            {
-                case IDLE:
-                    enemyState = RUNNING;
-                    break;
-                case RUNNING:
-                    float xSpeed = 0;
-                    if(walkDir == LEFT)
-                    {
-                        xSpeed = -walkSpeed;
-                    }
-                    else {
-                        xSpeed = walkSpeed;
-                    }
-                    if(CanMoveHere(hitbox.x + xSpeed,hitbox.y,hitbox.width,hitbox.height,lvlData)) {
-                        if (IsFloor(hitbox, xSpeed, lvlData)) {
-                            hitbox.x += xSpeed;
-                            return;
+                if (enemyType == SKELETON) {
+            switch(enemyState) {
+                    case SK_IDLE:
+                        enemyState = SK_RUNNING;
+                        break;
+                    case SK_RUNNING:
+                        float xSpeed = 0;
+                        if (walkDir == LEFT) {
+                            xSpeed = -walkSpeed;
+                        } else {
+                            xSpeed = walkSpeed;
                         }
-                    }
-                    changeWalkDir();
-                    break;
+                        if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+                            if (IsFloor(hitbox, xSpeed, lvlData)) {
+                                hitbox.x += xSpeed;
+                                return;
+                            }
+                        }
+                        changeWalkDir();
+                        break;
+                }
             }
+                else if(enemyType == KNIGHT)
+                {
+                    switch(enemyState) {
+                        case KN_IDLE:
+                            enemyState = KN_RUNNING;
+                            break;
+                        case SK_RUNNING:
+                            float xSpeed = 0;
+                            if (walkDir == LEFT) {
+                                xSpeed = -walkSpeed;
+                            } else {
+                                xSpeed = walkSpeed;
+                            }
+                            if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+                                if (IsFloor(hitbox, xSpeed, lvlData)) {
+                                    hitbox.x += xSpeed;
+                                    return;
+                                }
+                            }
+                            changeWalkDir();
+                            break;
+                    }
+                }
         }
 
     }
@@ -162,7 +255,16 @@ public abstract class Enemy extends Entity {
         currentHealth -= amount;
         if(currentHealth <=0)
         {
-            newState(DEAD);
+
+            if(enemyType == SKELETON) {
+                newState(SK_DEAD);
+                Player.updateScore(10);
+            }
+            else if(enemyType == KNIGHT) {
+                newState(KN_DEAD);
+                Player.updateScore(20);
+            }
+
             int enemies = EnemyManager.getEnemies();
             EnemyManager.setEnemies(--enemies);
         }
@@ -185,12 +287,16 @@ public abstract class Enemy extends Entity {
                         player.changeHealth((int) (-GetEnemyDMG(enemyType) * 1.5));
                         System.out.println("INAMICUL A DAT O LOVITURA CRITICA!");
                         break;
+                    case KNIGHT:
+                        player.changeHealth((int)(-GetEnemyDMG(enemyType) * 1.5));
                     default:
                         player.changeHealth((int)(-GetEnemyDMG(enemyType) * 1.25));
                 }
             }
             else
                 player.changeHealth((-GetEnemyDMG(enemyType)));
+            //Lovitura normala;
+
             attackChecked = true;
         }
     }
@@ -282,7 +388,11 @@ public abstract class Enemy extends Entity {
         hitbox.y = y;
         firstUpdate = true;
         currentHealth = maxHealth;
-        newState(IDLE);
+        if(enemyType == SKELETON)
+            newState(SK_IDLE);
+        else if(enemyType == KNIGHT)
+            newState(KN_IDLE);
+
         active = true;
         fallspeed = 0;
     }

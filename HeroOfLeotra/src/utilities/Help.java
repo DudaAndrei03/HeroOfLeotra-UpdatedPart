@@ -130,7 +130,7 @@ public class Help {
 
     public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
         int value = lvlData[(int) yTile][(int) xTile];
-        if (value >= 99 || value < 0 || value == 1 || value == 9 || value == 10 || value == 14 || value == 7 || value == 20 || value == 30 || value == 42) // trebuie modificat value == 31 am pus doar pentru tile-ul de grass !
+        if (value >= 99 || value < 0 || value == 1 || value == 9 || value == 10 || value == 14 || value == 7 || value == 20 || value == 30 || value == 42 || value == 5 || value == 61) // trebuie modificat value == 31 am pus doar pentru tile-ul de grass !
         {
             return true;
         }
@@ -169,18 +169,28 @@ public class Help {
 
     }
 
-    /*public static boolean TileOfFast(int xTile,int yTile,int [][] lvlData)
+    public static boolean HealTile(int xTile,int yTile,int [][] lvlData)
     {
         int value = lvlData[(int) yTile][(int) xTile];
 
-        if (value >= 80 && value <= 83) {
+        if (value == 13) {
             //surface of the acid
+            return true;
+        }
+        return false;
+    }
+
+    public static boolean TileOfJump(int xTile,int yTile,int [][] lvlData)
+    {
+        int value = lvlData[(int) yTile + 1][(int) xTile];
+
+        if (value == 61) {
             return true;
         }
         return false;
 
     }
-    */
+
 
     public static boolean IsSightClear(int[][] lvlData, Rectangle2D.Float firstHitbox, Rectangle2D.Float secondHitbox, int tileY) {
         int firstXTile = (int) (firstHitbox.x / Game.TILES_SIZE);

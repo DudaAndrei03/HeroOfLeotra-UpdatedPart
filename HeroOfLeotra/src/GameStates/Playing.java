@@ -138,7 +138,8 @@ public class Playing extends State implements stateMethods {
             int lvlIndex = levelManager.getLevelIndex();
             //System.out.println(lvlIndex);
 
-            if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(0)) { // daca e primul nivel incarcam asta
+            if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(0)||
+                    levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(2)) { // daca e primul nivel incarcam asta
                 g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
                 drawTrees_Back(g);
                 drawMountain_Front(g);

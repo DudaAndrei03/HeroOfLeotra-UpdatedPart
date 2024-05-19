@@ -55,19 +55,19 @@ public class Skeleton extends Enemy{
         else {
             switch(enemyState)
             {
-                case IDLE:
-                    newState(RUNNING);
+                case SK_IDLE:
+                    newState(SK_RUNNING);
                     break;
-                case RUNNING:
+                case SK_RUNNING:
                     if(CanSeePlayer(lvlData,player)) {
                         followPlayer(player);
                         if (isPlayerAttackable(player))
-                            newState(ATTACKING);
+                            newState(SK_ATTACKING);
                     }
 
                     Move(lvlData);
                     break;
-                case ATTACKING:
+                case SK_ATTACKING:
                     if(animationIndex == 0)
                     {
                         attackChecked = false;
@@ -83,7 +83,7 @@ public class Skeleton extends Enemy{
     }
     public void update(int [][]lvlData,Player player) {
         updateBehaviour(lvlData,player);
-        updateAnimationTick();
+        updateAnimationTick_Skeletons();
         updateAttackBox();
     }
 

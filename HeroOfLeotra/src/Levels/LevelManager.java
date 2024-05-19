@@ -20,7 +20,7 @@ public class LevelManager {
 
     private ArrayList<Level> levels;
 
-    private static int lvlIndex = 1;
+    private static int lvlIndex = 2;
 
     static int[][] map1TileNum;
     public static final int map_WIDTH = 70; //provizoriu

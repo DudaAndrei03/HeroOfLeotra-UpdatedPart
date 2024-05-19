@@ -91,6 +91,9 @@ public class Menu extends State implements stateMethods {
                     if(mb.getGameState() == GameState.PLAYING)
                     {
                         game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
+                        //Adaugata noua in caz de da erori trebuie scoasa(Dedesubt)
+                        game.getPlaying().getLevelManager().update();
+
                     }
                     if(mb.getGameState() == GameState.QUIT)
                     {

@@ -1,4 +1,5 @@
 package utilities;
+import Entities.GoldenKnight;
 import Entities.Skeleton;
 import Levels.Level;
 import Levels.LevelManager;
@@ -28,6 +29,8 @@ public class LoadSave {
 
     public static final String MENU_BUTTON = "Menu/Menu1.png";
     public static final String SKELETON = "Enemies/Skeleton.png";
+
+    public static final String KNIGHT ="Enemies/Knight.png";
 
     public static final String HEALTH_BAR = "StatusPlayer/HealthBar.png";
 
@@ -91,17 +94,36 @@ public class LoadSave {
         int value;
         ArrayList<Skeleton> list = new ArrayList<Skeleton>();
 
-    for(int j = 0 ; j < Game.TILES_IN_HEIGHT; j++)
-        for(int i = 0; i < 70; ++i)
-        {
-            value = lvldata[j][i];
-            if(value == Constants.EnemyConstants.SKELETON)
+        for(int j = 0 ; j < Game.TILES_IN_HEIGHT; j++)
+            for(int i = 0; i < 70; ++i)
             {
-            list.add(new Skeleton(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+                value = lvldata[j][i];
+                if(value == Constants.EnemyConstants.SKELETON)
+                {
+                    list.add(new Skeleton(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+                }
             }
-        }
         //System.out.println("Numărul total de schelete identificate: " + list.size());
-    return list;
+        return list;
+
+    }
+
+    public static ArrayList<GoldenKnight> GetKnights(int [][] lvldata)
+    {
+        int value;
+        ArrayList<GoldenKnight> list = new ArrayList<GoldenKnight>();
+
+        for(int j = 0 ; j < Game.TILES_IN_HEIGHT; j++)
+            for(int i = 0; i < 70; ++i)
+            {
+                value = lvldata[j][i];
+                if(value == Constants.EnemyConstants.KNIGHT)
+                {
+                    list.add(new GoldenKnight(i * Game.TILES_SIZE, j * Game.TILES_SIZE));
+                }
+            }
+        //System.out.println("Numărul total de schelete identificate: " + list.size());
+        return list;
 
     }
 

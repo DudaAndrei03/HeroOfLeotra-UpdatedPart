@@ -16,7 +16,7 @@ public class GoldenKnight extends Enemy{
 
 
     public GoldenKnight(float x, float y) {
-        super(x, y, SKELETON_WIDTH, SKELETON_HEIGHT, SKELETON);
+        super(x, y , KNIGHT_WIDTH, KNIGHT_HEIGHT, KNIGHT);
         initHitbox(x,y,(int)(15* Game.SCALE),(int)(28* Game.SCALE));
         initAttackBox();
     }
@@ -29,11 +29,12 @@ public class GoldenKnight extends Enemy{
     private void updateAttackBox() {
         if(walkDir == RIGHT)
         {
-            attackHitBox.x = hitbox.x + (hitbox.width) + (int)(Game.SCALE * 6.25);
+            attackHitBox.x = hitbox.x + (hitbox.width) + (int)(Game.SCALE * 3);
         }
         if(walkDir == LEFT)
         {
-            attackHitBox.x = hitbox.x - (hitbox.width) - (int)(Game.SCALE * 10);
+            attackHitBox.x = hitbox.x - (hitbox.width) + (int)(Game.SCALE * 8);
+
         }
         attackHitBox.y = hitbox.y + (Game.SCALE * 10);
     }
@@ -55,25 +56,25 @@ public class GoldenKnight extends Enemy{
         else {
             switch(enemyState)
             {
-                case IDLE:
-                    newState(RUNNING);
+                case KN_IDLE:
+                    newState(KN_RUNNING);
                     break;
-                case RUNNING:
+                case KN_RUNNING:
                     if(CanSeePlayer(lvlData,player)) {
                         followPlayer(player);
                         if (isPlayerAttackable(player))
-                            newState(ATTACKING);
+                            newState(KN_ATTACKING);
                     }
 
                     Move(lvlData);
                     break;
-                case ATTACKING:
+                case KN_ATTACKING:
                     if(animationIndex == 0)
                     {
                         attackChecked = false;
                     }
 
-                    if(animationIndex == 3 && !attackChecked)
+                    if(animationIndex == 2 && !attackChecked)
                     {
                         checkEnemyHit(attackHitBox,player);
                     }
@@ -83,7 +84,7 @@ public class GoldenKnight extends Enemy{
     }
     public void update(int [][]lvlData,Player player) {
         updateBehaviour(lvlData,player);
-        updateAnimationTick();
+        updateAnimationTick_Knights();
         updateAttackBox();
     }
 
