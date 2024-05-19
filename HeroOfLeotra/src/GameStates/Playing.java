@@ -19,11 +19,15 @@ import java.awt.image.BufferedImage;
 
 import static utilities.Constants.Environment.*;
 import static Levels.LevelManager.*;
+import static utilities.LoadSave.MENU_BG_IMG;
 
 public class Playing extends State implements stateMethods {
     private LevelManager levelManager;
     private Player player;
     private EnemyManager enemyManager;
+
+    //private BufferedImage b_menu = LoadSave.GetSpriteAtlas(MENU_BG_IMG);
+
 
     private boolean paused = false;
     private PauseOverlay pauseOverlay;
@@ -46,7 +50,7 @@ public class Playing extends State implements stateMethods {
 
     private BufferedImage backgroundImg2,closeTrees2,midTrees2;
 
-    private BufferedImage backgroundImg3;
+    private BufferedImage backgroundImg3,houses3,houses3back;
 
     private boolean gameOver = false;
 
@@ -68,6 +72,10 @@ public class Playing extends State implements stateMethods {
         backgroundImg2 = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BACKGROUND2);
         closeTrees2 = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_CLOSETREES2);
         midTrees2 = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_MIDTREES2);
+
+        backgroundImg3 = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_BACKGROUND3);
+        houses3 = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_HOUSES3);
+        houses3back = LoadSave.GetSpriteAtlas(LoadSave.PLAYING_HOUSESBACK3);
 
 
 
@@ -138,18 +146,19 @@ public class Playing extends State implements stateMethods {
             int lvlIndex = levelManager.getLevelIndex();
             //System.out.println(lvlIndex);
 
-            if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(0)||
-                    levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(2)) { // daca e primul nivel incarcam asta
-                g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
-                drawTrees_Back(g);
-                drawMountain_Front(g);
+            if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(0)){ // daca e primul nivel incarcam asta
+                drawLvl1_background(g);
             }
 
             if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(1)) // daca e al doilea nivel incarcam asta
             {
-                g.drawImage(backgroundImg2,0,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
-                drawMidTrees(g);
-                drawCloseTrees(g);
+                drawLvl2_background(g);
+
+            }
+
+            if(levelManager.getCurrentLevel() == levelManager.getArrayLevels().get(2))
+            {
+                drawLvl3_background(g);
             }
 
             levelManager.draw(g, xLvlOffset);
@@ -169,6 +178,7 @@ public class Playing extends State implements stateMethods {
 
         else if(lvlCompleted)
         {
+            g.drawImage(LoadSave.GetSpriteAtlas(MENU_BG_IMG),0,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
             levelCompletedOverlay.draw(g);
             //levelManager.update();//lvlCompleted = false;
             //enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
@@ -202,6 +212,42 @@ public class Playing extends State implements stateMethods {
             g.drawImage(midTrees2, 0 + (int) (i) * CLOSE_TREES_WIDTH, 0, CLOSE_TREES_WIDTH, CLOSE_TREES_HEIGHT + 300, null);
         }
     }
+
+    private void drawbackCastle(Graphics g) {
+        for (int i = 0; i < 3; ++i) {
+            g.drawImage(houses3, 0 + (int) (i) * HOUSES_WIDTH, 0, HOUSES_WIDTH, HOUSES_HEIGHT + 400, null);
+        }
+    }
+
+    private void drawHouses(Graphics g) {
+        for (int i = 0; i < 3; ++i) {
+            g.drawImage(houses3back, 0 + (int) (i) * HOUSESBACK_WIDTH, 0, HOUSESBACK_WIDTH, HOUSESBACK_HEIGHT + 200, null);
+        }
+    }
+
+    private void drawLvl1_background(Graphics g)
+    {
+        g.drawImage(backgroundImg,0,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
+        drawTrees_Back(g);
+        drawMountain_Front(g);
+    }
+
+    private void drawLvl2_background(Graphics g)
+    {
+        g.drawImage(backgroundImg2,0,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
+        drawMidTrees(g);
+        drawCloseTrees(g);
+    }
+
+    private void drawLvl3_background(Graphics g)
+    {
+        g.drawImage(backgroundImg3,0,0,Game.GAME_WIDTH,Game.GAME_HEIGHT,null);
+        //drawHouses(g);
+        drawbackCastle(g);
+    }
+
+
+
 
 
     private void checkCloseToBorder()

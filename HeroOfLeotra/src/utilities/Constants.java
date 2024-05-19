@@ -72,8 +72,18 @@ public class Constants {
         public static final int CLOSE_TREES_HEIGHT = (int)(CLOSE_TREES_HEIGHT_DEFAULT * Game.SCALE) + 220;
 
 
+        public static final int HOUSES_WIDTH_DEFAULT = 384;
+        public static final int HOUSES_HEIGHT_DEFAULT = 288;
+
+        public static final int HOUSES_WIDTH = (int)(HOUSES_WIDTH_DEFAULT * Game.SCALE);
+        public static final int HOUSES_HEIGHT = (int)(HOUSES_HEIGHT_DEFAULT * Game.SCALE);
 
 
+        public static final int HOUSESBACK_WIDTH_DEFAULT = 688;
+        public static final int HOUSESBACK_HEIGHT_DEFAULT = 272;
+
+        public static final int HOUSESBACK_WIDTH = (int)(HOUSESBACK_WIDTH_DEFAULT * Game.SCALE);
+        public static final int HOUSESBACK_HEIGHT = (int)(HOUSESBACK_HEIGHT_DEFAULT * Game.SCALE);
 
     }
 

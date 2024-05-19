@@ -20,7 +20,7 @@ public class LevelManager {
 
     private ArrayList<Level> levels;
 
-    private static int lvlIndex = 2;
+    private static int lvlIndex = 3;
 
     static int[][] map1TileNum;
     public static final int map_WIDTH = 70; //provizoriu
@@ -224,8 +224,14 @@ public class LevelManager {
             lvlIndex++;
         }
         else {
-            lvlIndex = 1;// or 0 , this should mark an error
+            lvlIndex = 1;
         }
+
+        if(Game.getDataBase()!= null)
+            Game.getDataBase().update();
+
+        lvlIndex = Game.getDataBase().getLvlIndex();
+
     }
     public static int getLvlIndex()
     {

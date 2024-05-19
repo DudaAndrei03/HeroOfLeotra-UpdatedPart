@@ -45,6 +45,15 @@ public class LoadSave {
 
     public static final String PLAYING_MIDTREES2 = "Map/Map2/mid-trees.png";
 
+    public static final String PLAYING_BACKGROUND3 = "Map/Map3/background.png";
+
+    public static final String PLAYING_HOUSES3 = "Map/Map3/middleground.png";
+
+    public static final String PLAYING_HOUSESBACK3 = "Map/Map3/houses.png";
+
+
+
+
 
 
     private static int [][]lvlData;

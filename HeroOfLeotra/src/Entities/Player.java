@@ -48,7 +48,7 @@ public class Player extends Entity{
     private float gravity = 0.04f * Game.SCALE;
     private float jumpSpeed = -2.75f * Game.SCALE;
 
-    private float superjumpSpeed = -3.75f * Game.SCALE;
+    private float superjumpSpeed = -4.05f * Game.SCALE;
     private float fallSpeedAfterCollision = 0.5f * Game.SCALE;
     private boolean inAir = false;
 
@@ -542,5 +542,14 @@ public class Player extends Entity{
     public static void updateScore(int value)
     {
         Score += value;
+        if(Game.getDataBase()!= null)
+            Game.getDataBase().update();
+
+        Score = Game.getDataBase().getScore(); // Score initial va fi variabila care va fi incarcata in DataBase,iar dupa pentru
+                                                // a vedea clar ca baza de date merge vom incarca valoarea din baza de date
+    }
+    public static int getScore()
+    {
+        return Score;
     }
 }

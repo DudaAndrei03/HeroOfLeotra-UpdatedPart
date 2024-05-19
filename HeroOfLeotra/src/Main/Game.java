@@ -14,6 +14,7 @@ import java.io.IOException;
 
 public class Game implements Runnable{
 
+    private static DataBase db;
     private static Game instance;
     private GameWindow gameWindow;
     private GamePanel gamePanel;
@@ -59,6 +60,7 @@ public class Game implements Runnable{
         audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
+        db = new DataBase();
     }
 
     public void update()
@@ -163,5 +165,10 @@ public class Game implements Runnable{
     public AudioPlayer getAudioPlayer()
     {
         return audioPlayer;
+    }
+
+    public static DataBase getDataBase()
+    {
+        return db;
     }
 }
