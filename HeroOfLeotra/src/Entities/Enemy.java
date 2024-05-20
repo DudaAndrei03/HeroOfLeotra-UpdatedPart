@@ -48,16 +48,23 @@ public abstract class Enemy extends Entity {
     }
     public void drawUI(Graphics g,int xLevelOffset)
     {
+        int moreOffsetX = 0;
+        int moreOffsetY = 0;
         updateHealthBar();
         if(enemyType == SKELETON)
             g.setColor(Color.blue);
-        else
+        else if(enemyType == KNIGHT)
             g.setColor(Color.yellow);
+        else if(enemyType == KING) {
+            g.setColor(Color.black);
+            moreOffsetX = 40;
+            moreOffsetY = 10;
+        }
 
-        g.fillRect((int)hitbox.x - xLevelOffset,(int)hitbox.y - 15,(int)healthBarWidth,5);
+        g.fillRect((int)hitbox.x-xLevelOffset - moreOffsetX,(int)hitbox.y - 15 - moreOffsetY,(int)healthBarWidth,5);
 
         g.setColor(Color.black);
-        g.drawRect((int)hitbox.x - xLevelOffset, (int)hitbox.y - 15, (int)healthBarWidth, 5);
+        g.drawRect((int)hitbox.x - xLevelOffset - moreOffsetX, (int)hitbox.y - 15 - moreOffsetY, (int)healthBarWidth, 5);
 
     }
     public void updateHealthBar()
@@ -94,6 +101,7 @@ public abstract class Enemy extends Entity {
             break;
             case KNIGHT: enemy_speed = (float) (walkSpeed * 2);
             break;
+            case KING: enemy_speed = (float)(walkSpeed * 1.5);
             default:
                 enemy_speed = walkSpeed * 1;
         }
@@ -177,10 +185,45 @@ public abstract class Enemy extends Entity {
         }
     }
 
+
+    protected void updateAnimationTick_Kings()
+    {
+        int animationSpeed_enemy = 30; //animation speed for every enemy;
+
+        if(enemyState == KG_DEAD)
+        {
+            animationSpeed_enemy = 35;
+        }
+        animationTick++;
+        if(animationTick >=animationSpeed_enemy)
+        {
+            animationTick = 0;
+            animationIndex++;
+            if(animationIndex >= GetSpriteAmount(enemyType,enemyState))
+            {
+                //System.out.println(GetSpriteAmount((enemyType),animationIndex));
+                animationIndex = 0;
+                switch(enemyState)
+                {
+                    case KG_ATTACKING:
+                        enemyState = KG_IDLE;
+                        break;
+
+                    case KG_DEAD:
+                        active = false;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+    }
+
     public void update(int [][]lvlData) {
         updateMove(lvlData);
         updateAnimationTick_Skeletons();
         updateAnimationTick_Knights();
+        updateAnimationTick_Kings();
     }
 
     private void updateMove(int [][]lvlData)
@@ -230,7 +273,31 @@ public abstract class Enemy extends Entity {
                         case KN_IDLE:
                             enemyState = KN_RUNNING;
                             break;
-                        case SK_RUNNING:
+                        case KN_RUNNING:
+                            float xSpeed = 0;
+                            if (walkDir == LEFT) {
+                                xSpeed = -walkSpeed;
+                            } else {
+                                xSpeed = walkSpeed;
+                            }
+                            if (CanMoveHere(hitbox.x + xSpeed, hitbox.y, hitbox.width, hitbox.height, lvlData)) {
+                                if (IsFloor(hitbox, xSpeed, lvlData)) {
+                                    hitbox.x += xSpeed;
+                                    return;
+                                }
+                            }
+                            changeWalkDir();
+                            break;
+                    }
+                }
+
+                else if(enemyType == KING)
+                {
+                    switch(enemyState) {
+                        case KG_IDLE:
+                            enemyState = KG_RUNNING;
+                            break;
+                        case KG_RUNNING:
                             float xSpeed = 0;
                             if (walkDir == LEFT) {
                                 xSpeed = -walkSpeed;
@@ -263,6 +330,11 @@ public abstract class Enemy extends Entity {
             else if(enemyType == KNIGHT) {
                 newState(KN_DEAD);
                 Player.updateScore(20);
+            }
+            else if(enemyType == KING)
+            {
+                newState(KG_DEAD);
+                Player.updateScore(300);
             }
 
             int enemies = EnemyManager.getEnemies();
@@ -392,6 +464,8 @@ public abstract class Enemy extends Entity {
             newState(SK_IDLE);
         else if(enemyType == KNIGHT)
             newState(KN_IDLE);
+        else if(enemyType == KING)
+            newState(KG_IDLE);
 
         active = true;
         fallspeed = 0;

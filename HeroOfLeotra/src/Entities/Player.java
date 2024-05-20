@@ -406,9 +406,11 @@ public class Player extends Entity{
                 }
                 else if(HealTile((int)xIndex,(int)yIndex,lvlData))
                 {
-                    changeHealth(health_potion);
-                    lvlData[(int)yIndex][(int)xIndex] = 0; //sa dispara dupa ce am luat inima
-                    Player.updateScore(5);
+                    if(currentHealth != maxHealth) {
+                        changeHealth(health_potion);
+                        lvlData[(int) yIndex][(int) xIndex] = 0; //sa dispara dupa ce am luat inima
+                        Player.updateScore(5);
+                    }
                 }
 
                 else if(TileOfJump((int)xIndex,(int)yIndex,lvlData))

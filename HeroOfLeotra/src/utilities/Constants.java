@@ -27,6 +27,8 @@ public class Constants {
                 return 30;
             case EnemyConstants.KNIGHT:
                 return 45;
+            case EnemyConstants.KING:
+                return 100;
             default:
                 return 0;
         }
@@ -37,9 +39,11 @@ public class Constants {
         switch(enemytype)
         {
             case EnemyConstants.SKELETON:
-                return 20;
+                return 15;
                 case EnemyConstants.KNIGHT:
                     return 10;
+                    case EnemyConstants.KING:
+                        return 35;
             default:
                 return 0;
         }
@@ -91,6 +95,8 @@ public class Constants {
         public static final int SKELETON = 4; // o valoare la care nu se ajunge in tilenum
 
         public static final int KNIGHT = 8;
+
+        public static final int KING = 12;
         public static final int SK_IDLE = 1; //1 pt stanga
         public static final int SK_RUNNING = 5; //7 pt dreapta , 5 pt stanga
         public static final int SK_ATTACKING = 8;
@@ -107,6 +113,14 @@ public class Constants {
         public static final int KN_HIT = 9; // NU E FOLOSIT INCA
 
         public static final int KN_DEAD = 9;
+
+
+        public static final int KG_IDLE = 1; //1 pt stanga
+        public static final int KG_RUNNING = 4; //6 pt dreapta , 4 pt stanga
+        public static final int KG_ATTACKING = 7;
+        //public static final int KG_HIT = 9; // NU E FOLOSIT INCA
+
+        public static final int KG_DEAD = 6;
 
         public static final int SKELETON_WIDTH_DEFAULT = 16;
         public static final int SKELETON_HEIGHT_DEFAULT = 28;
@@ -126,6 +140,17 @@ public class Constants {
 
         public static final int KNIGHT_DRAWOFFSET_X = (int)(14 * Game.SCALE);
         public static final int KNIGHT_DRAWOFFSET_Y = (int)(14 * Game.SCALE);
+
+
+
+        public static final int KING_WIDTH_DEFAULT = 32;
+        public static final int KING_HEIGHT_DEFAULT = 38;
+
+        public static final int KING_WIDTH = (int)(KNIGHT_WIDTH_DEFAULT * Game.SCALE);
+        public static final int KING_HEIGHT = (int)(KNIGHT_HEIGHT_DEFAULT * Game.SCALE);
+
+        public static final int KING_DRAWOFFSET_X = (int)(14 * Game.SCALE);
+        public static final int KING_DRAWOFFSET_Y = (int)(14 * Game.SCALE);
 
 
 
@@ -161,6 +186,18 @@ public class Constants {
                         case KN_ATTACKING:
                             return 4;
                         case KN_DEAD:
+                            return 5;
+                        default:
+                            return 1;
+                    }
+                case KING:
+                    switch(enemyState)
+                    {
+                        case KG_IDLE:
+                            return 2;
+                        case KG_RUNNING:
+                            return 8;
+                        case KG_ATTACKING, KG_DEAD:
                             return 5;
                         default:
                             return 1;

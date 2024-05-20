@@ -22,11 +22,15 @@ public class EnemyManager {
     private BufferedImage[][] Skeleton_arr;
 
     private BufferedImage [][] Knight_arr;
+
+    private BufferedImage [][] King_arr;
     private Playing playing;
 
     private ArrayList<Skeleton> skeletons= new ArrayList<>(); //Compozitie <=> Composite
 
     private ArrayList<GoldenKnight> knights = new ArrayList<>();
+
+    private ArrayList<King> kings = new ArrayList<>();
 
     public EnemyManager(Playing playing) {
         this.playing = playing;
@@ -39,6 +43,7 @@ public class EnemyManager {
 
         loadSkeletons();
         loadKnights();
+        loadKings();
         //System.out.println(skeletons.size());
         //System.out.println("LOAD ENEMIES APELAT!");
 
@@ -53,6 +58,12 @@ public class EnemyManager {
     {
         skeletons.clear();
         knights.clear();
+        kings.clear();
+    }
+
+    private void loadKings() {
+        kings = LoadSave.GetKings(playing.getLevelManager().getCurrentLevel().getLevelData());
+
     }
     public void loadSkeletons()
     {
@@ -92,12 +103,25 @@ public class EnemyManager {
             }
         }
 
+        BufferedImage temp3 = LoadSave.GetSpriteAtlas(LoadSave.KING);
+        King_arr = new BufferedImage[9][8];
+
+        for(int j = 0; j < King_arr.length;++j)
+        {
+            for(int i = 0; i < King_arr[0].length; ++i)
+            {
+                King_arr[j][i] = temp3.getSubimage(i*64,j*64,64,64);
+            }
+        }
+
     }
 
     public void draw(Graphics g,int xlevelOffset) {
         drawKnights(g,xlevelOffset);
         drawSkeletons(g,xlevelOffset);
+        drawKings(g,xlevelOffset);
     }
+
 
     private void drawSkeletons(Graphics g,int xlevelOffset) {
         for (Skeleton sk : skeletons) {
@@ -172,6 +196,45 @@ public class EnemyManager {
         }
     }
 
+    private void drawKings(Graphics g, int xlevelOffset) {
+
+        for (King kg : kings) {
+            if (kg.isActive()) {
+                {
+                    if (kg.getAnimationIndex() == GetSpriteAmount(KING, kg.getEnemystate())) {
+                        kg.setAnimationIndex(0);
+                    }
+
+                    if (kg.getEnemystate() != KG_ATTACKING) {
+                        if(kg.getEnemystate() == KG_DEAD)
+                        {
+                            g.drawImage(King_arr[kg.getEnemystate()][kg.getAnimationIndex()], (int) (kg.hitbox.x - KING_DRAWOFFSET_X) - xlevelOffset, (int) (kg.hitbox.y - KING_DRAWOFFSET_Y), (int) (Game.SCALE * KING_WIDTH), (int) (Game.SCALE * KING_HEIGHT), null);
+                        }
+                        else {
+                                if (kg.getWalkDir() == LEFT) {
+                                    g.drawImage(King_arr[kg.getEnemystate()][kg.getAnimationIndex()], (int) (kg.hitbox.x - KING_DRAWOFFSET_X) - xlevelOffset, (int) (kg.hitbox.y - KING_DRAWOFFSET_Y), (int) (Game.SCALE * KING_WIDTH), (int) (Game.SCALE * KING_HEIGHT), null);
+                                } else if (kg.getWalkDir() == RIGHT) {
+                                    g.drawImage(King_arr[kg.getEnemystate() + 1][kg.getAnimationIndex()], (int) (kg.hitbox.x - KING_DRAWOFFSET_X) - xlevelOffset, (int) (kg.hitbox.y - KING_DRAWOFFSET_Y), (int) (Game.SCALE * KING_WIDTH), (int) (Game.SCALE * KING_HEIGHT), null);
+                                }
+                        }
+
+                    } else if (kg.getEnemystate() == KG_ATTACKING) {
+                        if (kg.getWalkDir() == LEFT) {
+                            g.drawImage(King_arr[kg.getEnemystate()][kg.getAnimationIndex()], (int) (kg.hitbox.x - KING_DRAWOFFSET_X) - xlevelOffset, (int) (kg.hitbox.y - KING_DRAWOFFSET_Y), (int) (Game.SCALE * KING_WIDTH), (int) (Game.SCALE * KING_HEIGHT), null);
+                        } else
+                            g.drawImage(King_arr[kg.getEnemystate() + 1][kg.getAnimationIndex()], (int) (kg.hitbox.x - KING_DRAWOFFSET_X) - xlevelOffset, (int) (kg.hitbox.y - KING_DRAWOFFSET_Y), (int) (Game.SCALE * KING_WIDTH), (int) (Game.SCALE * KING_HEIGHT), null);
+
+                    }
+                    kg.drawUI(g,xlevelOffset);
+                    //kg.drawHitbox(g, xlevelOffset);
+                    //kg.drawAttackBox(g, xlevelOffset);
+
+                }
+            }
+        }
+
+    }
+
 
 
     public void checkEnemyHit(Rectangle2D.Float attackHitBox) {
@@ -210,6 +273,25 @@ public class EnemyManager {
                 }
             }
         }
+
+
+        for (King kg : kings) {
+            if (kg.isActive()) {
+                if (attackHitBox.intersects(kg.getHitbox())) {
+                    //Mecanica de critica pentru player 30% sa dea o critica
+                    if (kg.getCurrentHealth() > 0) {
+                        double critical_hit = Math.random();
+
+                        if (critical_hit < 0.7) // HIT NORMAL
+                            kg.hurt(20);
+                        else {
+                            kg.hurt(30);
+                            System.out.println("AI DAT O CRITICA!");
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void update(int [][] lvlData,Player player)
@@ -226,6 +308,14 @@ public class EnemyManager {
         {
             if(kn.isActive()) {
                 kn.update(lvlData, player);
+                isAnyActive = true;
+            }
+        }
+        for(King kg : kings)
+        {
+            if(kg.isActive())
+            {
+                kg.update(lvlData,player);
                 isAnyActive = true;
             }
         }
@@ -246,6 +336,10 @@ public class EnemyManager {
         for(GoldenKnight kn: knights)
         {
             kn.resetEnemy();
+        }
+        for(King kg: kings)
+        {
+            kg.resetEnemy();
         }
         enemies = numberEnemies;
     }
