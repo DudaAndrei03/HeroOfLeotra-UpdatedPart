@@ -87,6 +87,8 @@ public class LevelCompletedOverlay {
                 //System.out.println(lvl_ind);
                 GameState.state = GameState.PLAYING;
                 playing.resetAll();
+                game.getPlaying().getPlayer().resetAll();
+
                 game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex()); // Pt schimbarea muzicii
                 Game.getDataBase().update();
 

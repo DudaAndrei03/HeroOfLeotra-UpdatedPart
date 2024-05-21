@@ -541,6 +541,28 @@ public class Player extends Entity{
             inAir = true;
         }
     }
+
+    public void resetHealth()
+    {
+        currentHealth = maxHealth;
+    }
+
+    public void resetAllButSetPositionForPlayer(double player_X,double player_Y){
+        resetDirectionBooleans();
+        inAir = false;
+        attacking = false;
+        moving = false;
+        playerAction = IDLE;
+        currentHealth = maxHealth;
+        hitbox.x = (float)player_X;
+        hitbox.y = (float)player_Y;
+        Score = 0;
+
+        if(!IsEntityOnFloor(hitbox,lvlData))
+        {
+            inAir = true;
+        }
+    }
     public static void updateScore(int value)
     {
         Score += value;
@@ -553,5 +575,26 @@ public class Player extends Entity{
     public static int getScore()
     {
         return Score;
+    }
+    public float getPlayerX()
+    {
+        return this.x;
+    }
+    public float getPlayerY()
+    {
+        return this.y;
+    }
+
+    public int getCurrentHealth()
+    {
+        return currentHealth;
+    }
+    public void setCurrentHealth(int health)
+    {
+        this.currentHealth = health;
+    }
+    public void printCurrentHealth()
+    {
+        System.out.println(currentHealth);
     }
 }

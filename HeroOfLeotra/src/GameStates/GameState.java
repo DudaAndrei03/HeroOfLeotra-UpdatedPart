@@ -1,7 +1,7 @@
 package GameStates;
 
 public enum GameState {
-    MENU,PLAYING,OPTIONS,QUIT;
+    MENU,PLAYING,LOAD,QUIT;
 
     //Simple enum class for types of GameStates
 

@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import static GameStates.GameState.QUIT;
+import static GameStates.GameState.*;
 
 public class Menu extends State implements stateMethods {
 
@@ -26,7 +26,7 @@ public class Menu extends State implements stateMethods {
 
     private void loadButtons() {
         buttons[0] = new MenuButton(Game.GAME_WIDTH/2 , (int)(150 * Game.SCALE),0,GameState.PLAYING);
-        buttons[1] = new MenuButton(Game.GAME_WIDTH/2 , (int)(210 * Game.SCALE),1,GameState.OPTIONS);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH/2 , (int)(210 * Game.SCALE),1,GameState.LOAD);
         buttons[2] = new MenuButton(Game.GAME_WIDTH/2 , (int)(270 * Game.SCALE),2, QUIT);
 
     }
@@ -90,7 +90,13 @@ public class Menu extends State implements stateMethods {
                     mb.ModifyGameState();
                     if(mb.getGameState() == GameState.PLAYING)
                     {
+                        game.getPlaying().getPlayer().printCurrentHealth();
                         game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
+                        /*int health = game.getPlaying().getPlayer().getCurrentHealth();
+                        System.out.println(health);
+                        game.getPlaying().getPlayer().setCurrentHealth(100);
+                        System.out.println(game.getPlaying().getPlayer().getCurrentHealth());
+                         */
                         //Adaugata noua in caz de da erori trebuie scoasa(Dedesubt)
                         game.getPlaying().getLevelManager().update();
 
@@ -99,9 +105,22 @@ public class Menu extends State implements stateMethods {
                     {
                         setGameState(GameState.QUIT); // va iesi instant
                     }
-                    if(mb.getGameState() == GameState.OPTIONS)
+                    if(mb.getGameState() == GameState.LOAD)
                     {
-                        // will happen something when i finish the options menu
+                        System.out.println("AM AJUNS AICI!!!!");
+                        double playerX = Game.getDataBase().getPlayerX();
+                        double playerY = Game.getDataBase().getPlayerY();
+                        int Health = Game.getDataBase().getHealth();
+
+                        GameState.state = PLAYING;
+                        game.getPlaying().resetAll();
+                        game.getPlaying().getPlayer().resetAllButSetPositionForPlayer(playerX,playerY);
+                        game.getPlaying().getPlayer().setCurrentHealth(Health);
+
+                        game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
+                        game.getPlaying().getLevelManager().update();
+
+                        //setGameState(GameState.PLAYING);
                     }
                 }
                 break;

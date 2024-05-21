@@ -28,7 +28,7 @@ public class LoadSave {
 
     public static final String MENU_BG_IMG = "Menu/foggy.png";
 
-    public static final String MENU_BUTTON = "Menu/Menu1.png";
+    public static final String MENU_BUTTON = "Menu/Menu_Load.png";
     public static final String SKELETON = "Enemies/Skeleton.png";
 
     public static final String KNIGHT ="Enemies/Knight.png";

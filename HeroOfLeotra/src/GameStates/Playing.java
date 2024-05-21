@@ -420,6 +420,7 @@ public class Playing extends State implements stateMethods {
         lvlCompleted = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
+        //Game.getDataBase().update();
     }
     public void checkEnemyHit(Rectangle2D.Float attackHitBox)
     {
@@ -430,6 +431,12 @@ public class Playing extends State implements stateMethods {
     {
         this.gameOver = gameOver;
     }
+
+    public void printGameOver()
+    {
+        System.out.println(gameOver);
+    }
+
 
     public EnemyManager getEnemyManager()
     {

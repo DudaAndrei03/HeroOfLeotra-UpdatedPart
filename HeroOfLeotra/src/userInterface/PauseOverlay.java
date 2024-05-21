@@ -22,7 +22,7 @@ public class PauseOverlay {
     private BufferedImage backgroundImg;
     private int bgX,bgY,bgW,bgH;
 
-    private UrmButton menuB,replayB,unpauseB;
+    private UrmButton menuB,replayB,saveB;
     public PauseOverlay(Playing playing)
     {
         this.playing = playing;
@@ -38,7 +38,7 @@ public class PauseOverlay {
 
         menuB = new UrmButton(menuX,bY,60,60,"MENU");
         replayB = new UrmButton(replayX,bY,60,60,"REPLAY");
-        unpauseB = new UrmButton(unpauseX,bY,60,60,"UNPAUSE");
+        saveB = new UrmButton(unpauseX,bY,60,60,"UNPAUSE");
 
     }
 
@@ -56,7 +56,7 @@ public class PauseOverlay {
     {
         menuB.update();
         replayB.update();
-        unpauseB.update();
+        saveB.update();
     }
 
     public void draw(Graphics g)
@@ -64,7 +64,7 @@ public class PauseOverlay {
         g.drawImage(backgroundImg,bgX,bgY,bgW,bgH,null);
         menuB.draw(g);
         replayB.draw(g);
-        unpauseB.draw(g);
+        saveB.draw(g);
     }
 
     public void mouseDragged(MouseEvent e)
@@ -87,9 +87,9 @@ public class PauseOverlay {
             replayB.setMousePressed(true);
             System.out.println("S-A APASAT IN JURUL REPLAY-ULUI");
         }
-        else if(isIn(e,unpauseB)) {
-            unpauseB.setMousePressed(true);
-            System.out.println("S-A APASAT IN JURUL UNPAUSE!");
+        else if(isIn(e,saveB)) {
+            saveB.setMousePressed(true);
+            System.out.println("S-A APASAT IN JURUL SAVE!");
         }
 
     }
@@ -112,14 +112,15 @@ public class PauseOverlay {
                     //System.out.println("S-a incercat REPLAY!");
                 }
             }
-        else if(isIn(e,unpauseB))
+        else if(isIn(e,saveB))
             {
-                playing.unpauseGame();
+                Game.getDataBase().update();
+                //playing.unpauseGame();
             }
 
         menuB.resetBools();
         replayB.resetBools();
-        unpauseB.resetBools();
+        saveB.resetBools();
     }
 
 }

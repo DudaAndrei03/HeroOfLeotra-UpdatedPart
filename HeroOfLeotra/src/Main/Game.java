@@ -60,7 +60,7 @@ public class Game implements Runnable{
         audioPlayer = new AudioPlayer();
         menu = new Menu(this);
         playing = new Playing(this);
-        db = new DataBase();
+        db = new DataBase(this);
     }
 
     public void update()

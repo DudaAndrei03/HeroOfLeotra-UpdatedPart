@@ -47,7 +47,7 @@ public class EnemyManager {
         //System.out.println(skeletons.size());
         //System.out.println("LOAD ENEMIES APELAT!");
 
-        enemies += skeletons.size() + knights.size();
+        enemies += skeletons.size() + knights.size() + kings.size();
         numberEnemies = enemies; // specifically for enemies onLVL1
 
         //System.out.println("Number of skeletons:" +  skeletons.size());
@@ -293,6 +293,8 @@ public class EnemyManager {
             }
         }
     }
+
+
 
     public void update(int [][] lvlData,Player player)
     {

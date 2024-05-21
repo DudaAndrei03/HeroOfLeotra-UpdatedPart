@@ -29,8 +29,10 @@ public class GameOverOverlay {
         if(e.getKeyCode() == KeyEvent.VK_ESCAPE)
         {
             playing.resetAll();
+            playing.printGameOver(); //gameOver in momentul de fata este false
             //LevelManager.setLvlIndex(1);
             GameState.state = GameState.MENU;
+
         }
     }
 }
