@@ -144,7 +144,7 @@ public class Constants {
 
 
         public static final int KING_WIDTH_DEFAULT = 32;
-        public static final int KING_HEIGHT_DEFAULT = 38;
+        public static final int KING_HEIGHT_DEFAULT = 100;
 
         public static final int KING_WIDTH = (int)(KNIGHT_WIDTH_DEFAULT * Game.SCALE);
         public static final int KING_HEIGHT = (int)(KNIGHT_HEIGHT_DEFAULT * Game.SCALE);

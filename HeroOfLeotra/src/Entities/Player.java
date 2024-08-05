@@ -566,10 +566,10 @@ public class Player extends Entity{
     public static void updateScore(int value)
     {
         Score += value;
-        if(Game.getDataBase()!= null)
-            Game.getDataBase().update();
+        //if(Game.getDataBase()!= null)
+            //Game.getDataBase().update();
 
-        Score = Game.getDataBase().getScore(); // Score initial va fi variabila care va fi incarcata in DataBase,iar dupa pentru
+        //Score = Game.getDataBase().getScore(); // Score initial va fi variabila care va fi incarcata in DataBase,iar dupa pentru
                                                 // a vedea clar ca baza de date merge vom incarca valoarea din baza de date
     }
     public static int getScore()
@@ -596,5 +596,10 @@ public class Player extends Entity{
     public void printCurrentHealth()
     {
         System.out.println(currentHealth);
+    }
+
+    public void setInAir(boolean air)
+    {
+        this.inAir = air;
     }
 }

@@ -1,5 +1,6 @@
 package GameStates;
 
+import Entities.Player;
 import Levels.LevelManager;
 import Main.Game;
 import userInterface.MenuButton;
@@ -90,7 +91,7 @@ public class Menu extends State implements stateMethods {
                     mb.ModifyGameState();
                     if(mb.getGameState() == GameState.PLAYING)
                     {
-                        game.getPlaying().getPlayer().printCurrentHealth();
+                        //game.getPlaying().getPlayer().printCurrentHealth();
                         game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
                         /*int health = game.getPlaying().getPlayer().getCurrentHealth();
                         System.out.println(health);
@@ -107,18 +108,27 @@ public class Menu extends State implements stateMethods {
                     }
                     if(mb.getGameState() == GameState.LOAD)
                     {
-                        System.out.println("AM AJUNS AICI!!!!");
+                        //System.out.println("AM AJUNS AICI!!!!");
                         double playerX = Game.getDataBase().getPlayerX();
                         double playerY = Game.getDataBase().getPlayerY();
                         int Health = Game.getDataBase().getHealth();
+                        int Score = Game.getDataBase().getScore();
+                        int lvlIndex = Game.getDataBase().getLvlIndex();
 
                         GameState.state = PLAYING;
-                        game.getPlaying().resetAll();
-                        game.getPlaying().getPlayer().resetAllButSetPositionForPlayer(playerX,playerY);
-                        game.getPlaying().getPlayer().setCurrentHealth(Health);
+                        game.getPlaying().resetAll();//resetam tot ce tine de playing
+                        game.getPlaying().getPlayer().resetAllButSetPositionForPlayer(playerX,playerY);//resetam inca o data tot dar punem pozitiile jucatorului din baza de date
+                        LevelManager.setLvlIndex(lvlIndex);//setam levelindex din baza de date
+                        game.getPlaying().getPlayer().setCurrentHealth(Health);//setam viata jucatorului din baza de date
+                        game.getPlaying().getLevelManager().update();//updatam mapa pe care suntem
+                        game.getPlaying().getEnemyManager().loadEnemies();//incarcam corespunzator mapei in care suntem pozitiile inamicilor
+
+                        Player.updateScore(Score);
 
                         game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
-                        game.getPlaying().getLevelManager().update();
+                        //game.getPlaying().getLevelManager().update();
+                        game.getPlaying().getPlayer().setInAir(true);
+                        //Il setam initial in aer daca e ceva sa cada nu sa ramana pana la apasarea urmatoarei taste
 
                         //setGameState(GameState.PLAYING);
                     }

@@ -1,5 +1,6 @@
 package Levels;
 
+import GameStates.GameState;
 import Main.Game;
 import utilities.LoadSave;
 
@@ -20,7 +21,7 @@ public class LevelManager {
 
     private ArrayList<Level> levels;
 
-    private static int lvlIndex = 1;
+    private static int lvlIndex = 3;
 
     static int[][] map1TileNum;
     public static final int map_WIDTH = 70; //provizoriu
@@ -227,10 +228,10 @@ public class LevelManager {
             lvlIndex = 1;
         }
 
-        if(Game.getDataBase()!= null)
-            Game.getDataBase().update();
+        //if(Game.getDataBase()!= null)
+            //Game.getDataBase().update();
 
-        lvlIndex = Game.getDataBase().getLvlIndex();
+        //lvlIndex = Game.getDataBase().getLvlIndex();
 
     }
     public static int getLvlIndex()

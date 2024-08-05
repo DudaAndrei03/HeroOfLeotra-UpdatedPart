@@ -11,7 +11,6 @@ public class UrmButton extends PauseButton{
 
     private boolean mousePressed,mouseOver,mouseReleased;
 
-
     private BufferedImage[] imgs;
     private int index = 0;
 

@@ -157,7 +157,6 @@ public class EnemyManager {
             }
         }
     }
-
     private void drawKnights(Graphics g,int xlevelOffset) {
         for (GoldenKnight kn : knights) {
             if (kn.isActive()) {
@@ -195,7 +194,7 @@ public class EnemyManager {
             }
         }
     }
-
+        //drawing method for a specific type of enemy
     private void drawKings(Graphics g, int xlevelOffset) {
 
         for (King kg : kings) {
@@ -236,7 +235,7 @@ public class EnemyManager {
     }
 
 
-
+        //Method for checking if the enemy has been hit
     public void checkEnemyHit(Rectangle2D.Float attackHitBox) {
         for (Skeleton sk : skeletons) {
             if (sk.isActive()) {
@@ -298,14 +297,22 @@ public class EnemyManager {
 
     public void update(int [][] lvlData,Player player)
     {
+        //ArrayList<Integer> activeList_SK = new ArrayList<>();
         boolean isAnyActive = false;
         for(Skeleton sk : skeletons)
         {
             if(sk.isActive()) {
                 sk.update(lvlData, player);
+                //activeList_SK.add(1);
+
                 isAnyActive = true;
             }
+            //activeList_SK.add(0);
+            //Pentru Load si Save Game pot adauga liste cu activ in baza de date care sa-mi tina listele de activ pt fiecare tip de inamic
+            //si cand dau save sa fie incarcate aceste liste, iar la afisare in metoda draw sa fie desenati doar scheletii care sunt activi
+
         }
+        //Game.getInstance().getPlaying().getLevelManager().getCurrentLevel().setLevelData(lvlData);
         for(GoldenKnight kn : knights)
         {
             if(kn.isActive()) {

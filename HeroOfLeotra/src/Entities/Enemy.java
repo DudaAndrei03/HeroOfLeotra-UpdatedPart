@@ -329,7 +329,7 @@ public abstract class Enemy extends Entity {
             }
             else if(enemyType == KNIGHT) {
                 newState(KN_DEAD);
-                Player.updateScore(20);
+                Player.updateScore(25);
             }
             else if(enemyType == KING)
             {

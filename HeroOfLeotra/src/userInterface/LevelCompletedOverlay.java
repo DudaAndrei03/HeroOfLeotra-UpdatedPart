@@ -90,7 +90,7 @@ public class LevelCompletedOverlay {
                 game.getPlaying().getPlayer().resetAll();
 
                 game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex()); // Pt schimbarea muzicii
-                Game.getDataBase().update();
+                //Game.getDataBase().update();
 
                 //playing.unpauseGame();
                 System.out.println("Next LEVEL!");
